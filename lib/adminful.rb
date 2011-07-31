@@ -5,7 +5,7 @@ module Adminful
 
   SNEAK_PARAM_NAME = :adminful_ready
 
-  # autoload :foo, 'adminful/foo'
+  autoload :Properties, 'adminful/properties'
 
   module Options
     mattr_accessor :path
