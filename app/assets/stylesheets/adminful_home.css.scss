@@ -1,0 +1,43 @@
+
+.adminful-home {
+
+  #resources-links {
+    position: absolute;
+    width: 100px;
+  }
+
+  #layout {
+    margin-left: 120px;
+  }
+
+  .resources-index {
+    table {
+      width: 100%;
+      background: black;
+
+      thead th {
+        background: #eee;
+        color: #000;
+        text-align: left;
+      }
+
+      td, th { padding: 4px; }
+
+      tr:nth-child(odd) td { background: white; }
+      tr:nth-child(even) td { background: #ddf; }
+
+      .actions {
+        width: 1%;
+        white-space: nowrap;
+
+        a {
+          margin: 3px;
+
+          &.remove { color: red; }
+          &.edit { color: green; }
+        }
+      }
+    }
+  }
+
+}

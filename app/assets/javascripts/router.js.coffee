@@ -8,12 +8,12 @@ class Global.Router extends Backbone.Router
 
   set_view: (view) ->
     view.app = @app
-    $("#adminful-home").
+    $("#layout").
       empty().
       append view.render().el
 
   home: ->
-    @set_view new ResourcesBox(collection: @app.resources)
+    $("#layout").empty()
 
   resource_index: (resource_name) ->
     resource = @app.resources.detect (r) -> r.get("name") == resource_name

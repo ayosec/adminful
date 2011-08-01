@@ -1,9 +1,12 @@
 <%= javascript_include_tag "adminful_home" %>
 <%= stylesheet_link_tag "adminful_home" %>
 
-<h1><%= t "adminful.home.title" %></h1>
+<div class="adminful-home">
+  <h1><%= t "adminful.home.title" %></h1>
 
-<div id="adminful-home"></div>
+  <div id="resources-links"></div>
+  <div id="layout"></div>
+</div>
 
 <script>
   $(function() {

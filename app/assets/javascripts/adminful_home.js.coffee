@@ -14,5 +14,9 @@ class Global.Adminful
     @router = new Router
     @router.app = this
 
+    resources_box = new ResourcesBox(collection: @resources)
+    resources_box.app = this
+    $("#resources-links").append resources_box.render().el
+
     Backbone.history.start()
 
