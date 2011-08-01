@@ -6,13 +6,16 @@ class Global.Router extends Backbone.Router
     "":                 "home"
     "/:resource":       "resource_index"
 
-  home: ->
-    @resources_box = new ResourcesBox(collection: @app.resources)
-    @resources_box.app = @app
-
+  set_view: (view) ->
+    view.app = @app
     $("#adminful-home").
       empty().
-      append @resources_box.render().el
+      append view.render().el
+
+  home: ->
+    @set_view new ResourcesBox(collection: @app.resources)
 
   resource_index: (resource_name) ->
-    console.log 
+    resource = @app.resources.detect (r) -> r.get("name") == resource_name
+    if resource
+      @set_view new ResourcesIndex(model: resource)

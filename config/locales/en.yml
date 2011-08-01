@@ -1,4 +1,15 @@
 en:
   adminful:
     home:
-      title: Admin interface
+      title: "Admin interface"
+
+
+    client:
+      resource_index:
+        loading: "Loading instances. Please wait..."
+
+        actions:
+          edit: "Edit"
+          remove: "Remove"
+
+          confirm_remove: "This will remove the instance. Are you sure?"

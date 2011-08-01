@@ -38,3 +38,12 @@ class Adminful::Properties::MongoidAdapter < Adminful::Properties
   end
 
 end
+
+# N.B.: Backbone.js expects an "id" field, so "_id" is ignored.
+# By now this has to be hardcoded.
+module Mongoid::Document
+  def as_json(value)
+    # Swap _id and id keys
+    attributes.as_json(value).tap {|h| h["id"] = h.delete "_id" }
+  end
+end

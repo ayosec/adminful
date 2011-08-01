@@ -7,6 +7,7 @@
 
 <script>
   $(function() {
+    Adminful.LocaleStrings = <%= raw t("adminful.client").to_json %>;
     window.App = new Adminful(<%= raw resources_to_json(@available_resources) %>);
   });
 </script>
