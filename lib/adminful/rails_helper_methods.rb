@@ -10,10 +10,10 @@ module ActionDispatch::Routing::Mapper::Scoping
   def adminful(options={})
     options[Adminful::SNEAK_PARAM_NAME] = true
 
-    if Adminful::Options.prefix_resources
-      options[:path] ||= Adminful::Options.path
+    scope(options) do
+      namespace(options.delete(:namespace) || Adminful::Options.namespace) do
+        yield
+     end
     end
-
-    scope(options) { yield }
   end
 end

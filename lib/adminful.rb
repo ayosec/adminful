@@ -8,8 +8,7 @@ module Adminful
   autoload :Properties, 'adminful/properties'
 
   module Options
-    mattr_accessor :path
-    mattr_accessor :prefix_resources
+    mattr_accessor :namespace
   end
 
   class Railtie < ::Rails::Engine
@@ -18,7 +17,6 @@ module Adminful
     #config.assets.precompile << /adminful.(css|js)$/
 
     config.adminful = Adminful::Options
-    config.adminful.path = "/admin"
-    config.adminful.prefix_resources = true
+    config.adminful.namespace = "adminful"
   end
 end
