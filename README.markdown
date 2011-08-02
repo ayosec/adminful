@@ -22,14 +22,17 @@ The following projects are very popular but at the moment still ActiveRecord-cen
 
 In your `Gemfile`, add the following dependencies:
 
-    gem 'backbone-rails' # backbone-rails must be required before adminful
-    gem 'adminful', :git => 'git://github.com/setepo/adminful.git'
+    gem 'backbone-rails'
+    gem 'adminful', :git => 'git://github.com/ayosec/adminful.git'
 
 Run:
 
     $ bundle install
 
 And you are ready to go!
+
+Note:
+At the moment, in order for the Rails 3.1 asset pipeline to work properly, backbone-rails must also be added to your Gemfile although it is a dependency of adminful.
 
 # Configuration
 
@@ -43,7 +46,7 @@ The controllers need to be namespaced, by default the expected namespace is `adm
     $ rails g controller adminful/users
 
 The generator might also create the views for you but adminful doesn't need them, so if you want go ahead and delete them.
-Instead make sure your controller serves JSON and set it to be included in the adminful interface.
+Instead make sure your controller serves JSON and tell adminful which model this controller works with (this last step might not be necessary in the future, as we will try to infer it from the controller name):
 
     class Adminful::ProductsController < ApplicationController
       respond_to :json
