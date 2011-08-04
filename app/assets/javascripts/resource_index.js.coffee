@@ -6,7 +6,7 @@ class Global.ResourcesIndex extends Backbone.View
 
   initialize: ->
 
-    @collection = new Global[@model.collection_name()]
+    @collection = new Global[@model.instanceCollectionClass()]
     @collection.bind "reset", =>
       @loading_records = false
       @render()
@@ -50,7 +50,7 @@ class Global.ResourceRow extends Backbone.View
   render: ->
     $(@el).empty()
 
-    for field in @model.collection.resource.fields
+    for field in @model.collection.resource.get("model").fields
       $("<td>", text: @model.get(field.name)).appendTo @el
 
     actions = $ "<td>", class: "actions"
@@ -65,4 +65,12 @@ class Global.ResourceRow extends Backbone.View
     @model.destroy()
 
   action_edit: ->
-    console.log "edit"
+    view = new ResourceFormView
+      model:
+        resource: @model.collection.resource
+        instance: @model
+    view.app = @app
+    $("#layout").
+      empty().
+      append view.render().el
+    Backbone.history.navigate "/#{@model.collection.resource.get("name")}/#{@model.id}/edit", false
