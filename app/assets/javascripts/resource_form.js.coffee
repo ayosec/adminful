@@ -23,7 +23,7 @@ class Global.ResourceFormView extends Backbone.View
     form = $ "<form>", class: "#{@model.resource.get "name"}"
     for field in @model.resource.fields()
       form.append $("<label>", for: "#{@model.resource.get('name')}_#{field.name}", text: field.label)
-      form.append $("<input>", type: ResourceFormView.INPUT_TYPES[field.type], name: "#{@model.resource.get('name')}[#{field.name}]", id: "#{@model.resource.get('name')}_#{field.name}", value: @model.instance.get(field.name), required: true)
+      form.append $("<input>", type: ResourceFormView.INPUT_TYPES[field.type], name: field.name, value: @model.instance.get(field.name), required: field.required)
       form.append $("<br/>")
     form.append $("<input />", type: "submit", class: "button", value: "Save")
     form.append $("<a>", class: "cancel", text:"Cancel")
@@ -32,11 +32,14 @@ class Global.ResourceFormView extends Backbone.View
     this
 
   cancel: ->
-    alert("cancel")
-    # redirect to resource index
+    Backbone.history.navigate "/#{@model.resource.get("name")}", true
 
   submit: ->
-    alert("submit")
-    #for field in @model.resource.fields()
-      #assign value from field
-    @model.instance.save
+    values = {}
+    for field in @model.resource.fields()
+      values[field.name] = $("input:[name=#{field.name}]").val()
+    @model.instance.save values,
+      success: (model, response) =>
+        Backbone.history.navigate "/#{@model.resource.get("name")}", true
+      error: (model, response) =>
+        alert "Error saving record!"
