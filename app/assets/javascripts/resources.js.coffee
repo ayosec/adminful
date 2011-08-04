@@ -9,15 +9,17 @@ class Global.Resource extends Backbone.Model
     model = @get("model")
 
     # A Backbone.Model for the application model
-    Global[model.name] = Backbone.Model.extend fields: model.fields
+    Global[model.name] = Backbone.Model.extend
+      fields: model.fields
+      urlRoot: @get("index_path")
 
-    # A Backbone.Collection for the application resource
-    Global[@collection_name()] = Backbone.Collection.extend
+    # A Backbone.Collection for the application resources
+    Global[@instanceCollectionClass()] = Backbone.Collection.extend
       model: Global[model.name]
-      resource: model
+      resource: this
       url: @get("index_path")
 
-  collection_name: ->
+  instanceCollectionClass: ->
     @get("name").camelcase()
 
   fields: ->
