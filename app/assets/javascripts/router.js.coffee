@@ -32,7 +32,6 @@ class Global.Router extends Backbone.Router
     if resource && instance
       instance.fetch
         success: (model, response) =>
-          alert "success!"
           @set_view new ResourceFormView
             model:
               resource: resource
