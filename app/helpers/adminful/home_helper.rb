@@ -15,7 +15,6 @@ module Adminful::HomeHelper
         :name => route_name,
         :title => t(route_name, :scope => "adminful.resources", :default => route_name.humanize),
         :index_path => send(route_name + "_path"),
-        :show_path => send(route_name.singularize + "_path", "PLACEHOLDER"),
         :model => {
           :name => model.model_name.to_s,
           :label => model.model_name.human,
