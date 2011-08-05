@@ -19,6 +19,9 @@ class Global.ResourceFormView extends Backbone.View
 
   @FIELD_BLACKLIST = ["created_at", "updated_at"]
 
+  initialize: ->
+    @wasNew = @model.instance.isNew()
+
   render: ->
     # generate form
     form = $ "<form>", class: "#{@model.resource.get "name"}"
@@ -43,6 +46,9 @@ class Global.ResourceFormView extends Backbone.View
       values[field.name] = $("input:[name=#{field.name}]").val()
     @model.instance.save values,
       success: (model, response) =>
+        $.jGrowl I18n.t("#{if @wasNew then 'create' else 'update'}.success")
+
         Backbone.history.navigate "/#{@model.resource.get("name")}", true
+
       error: (model, response) =>
         alert "Error saving record!"
