@@ -6,6 +6,7 @@ class Global.Router extends Backbone.Router
     "":                     "home"
     "/:resource":           "resource_index"
     "/:resource/:id/edit":  "resource_edit"
+    "/:resource/new":       "resource_new"
 
   set_view: (view) ->
     view.app = @app
@@ -15,6 +16,14 @@ class Global.Router extends Backbone.Router
 
   home: ->
     $("#layout").empty()
+
+  resource_new: (resource_name) ->
+    resource = @app.resources.detect (r) -> r.get("name") == resource_name
+    if resource
+      @set_view new ResourceFormView
+        model:
+          resource: resource
+          instance: new Global[resource.get("model").name]
 
   resource_index: (resource_name) ->
     resource = @app.resources.detect (r) -> r.get("name") == resource_name

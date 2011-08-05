@@ -3,6 +3,8 @@ Global = window
 
 class Global.ResourcesIndex extends Backbone.View
   className: "resources-index"
+  events:
+    "click .actions .new":  "action_new"
 
   initialize: ->
 
@@ -33,8 +35,24 @@ class Global.ResourcesIndex extends Backbone.View
     @collection.each (instance) =>
       body.append (new ResourceRow(model: instance)).render().el
 
+
+    actions = $ "<div>", class: "actions"
+    actions.append $("<a>", class: "new", text: I18n.t("resource_index.actions.new"))
+
     $(@el).empty().append table
+    $(@el).append actions
     this
+
+  action_new: ->
+    view = new ResourceFormView
+      model:
+        resource: @model
+        instance: new Global[@model.get("model").name]
+    view.app = @app
+    $("#layout").
+      empty().
+      append view.render().el
+    Backbone.history.navigate "/#{@model.get("name")}/new", false
 
 class Global.ResourceRow extends Backbone.View
   tagName: "tr"
