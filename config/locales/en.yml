@@ -15,8 +15,14 @@ en:
 
           confirm_remove: "This will remove the instance. Are you sure?"
 
+      resource_form:
+        actions:
+          save: "Save"
+          cancel: "Cancel"
+
       create:
         success: "The instance has been created."
 
       update:
         success: "The instance has been updated."
+

@@ -43,8 +43,8 @@ class Global.ResourceFormView extends Backbone.View
         .append(widget)
         .appendTo(form)
 
-    form.append $("<input>", type: "button", class: "button", value: "Save")
-    form.append $("<a>", class: "cancel", text:"Cancel")
+    form.append $("<input>", type: "submit", class: "button", value: I18n.t("resource_form.actions.save"))
+    form.append $("<a>", class: "cancel", text: I18n.t("resource_form.actions.cancel"))
 
     form.bind "submit", (e) -> e.preventDefault()
     $(@el).empty().append form
