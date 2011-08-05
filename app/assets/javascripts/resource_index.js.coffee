@@ -37,7 +37,7 @@ class Global.ResourcesIndex extends Backbone.View
 
 
     actions = $ "<div>", class: "actions"
-    actions.append $("<a>", class: "new", text: I18n.t("resource_index.actions.new"))
+    actions.append $("<button>", class: "new", text: I18n.t("resource_index.actions.new"))
 
     $(@el).empty().append table
     $(@el).append actions

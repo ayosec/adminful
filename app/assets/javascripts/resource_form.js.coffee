@@ -4,7 +4,7 @@ Global = window
 class Global.ResourceFormView extends Backbone.View
   className: "resource-form"
   events:
-    "click .button":  "submit"
+    "click .submit":  "submit"
     "click .cancel":  "cancel"
 
   @INPUT_TYPES =
@@ -43,8 +43,10 @@ class Global.ResourceFormView extends Backbone.View
         .append(widget)
         .appendTo(form)
 
-    form.append $("<input>", type: "submit", class: "button", value: I18n.t("resource_form.actions.save"))
-    form.append $("<a>", class: "cancel", text: I18n.t("resource_form.actions.cancel"))
+    $("<div>", class: "actions")
+      .append($("<button>", type: "submit", class: "submit", text: I18n.t("resource_form.actions.save")))
+      .append($("<button>", class: "cancel", text: I18n.t("resource_form.actions.cancel")))
+      .appendTo form
 
     form.bind "submit", (e) -> e.preventDefault()
     $(@el).empty().append form
