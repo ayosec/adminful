@@ -9,6 +9,7 @@ en:
         loading: "Loading instances. Please wait..."
 
         actions:
+          new: "New"
           edit: "Edit"
           remove: "Remove"
 
