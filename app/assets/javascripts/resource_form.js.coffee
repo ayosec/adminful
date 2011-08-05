@@ -41,6 +41,12 @@ class Global.ResourceFormView extends Backbone.View
     Backbone.history.navigate "/#{@model.resource.get("name")}", true
 
   submit: ->
+
+    # Check if the form is valid before send the values
+    # If the browser has no support for Form#checkValidity the check will be skipped
+    if $(@el).find("form").get(0).checkValidity?() == false
+      return
+
     values = {}
     for field in @model.resource.fields()
       values[field.name] = $("input:[name=#{field.name}]").val()
