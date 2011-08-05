@@ -2,7 +2,7 @@
 Global = window
 
 class Global.ResourceFormView extends Backbone.View
-  className: "resource-edit"
+  className: "resource-form"
   events:
     "click .button":  "submit"
     "click .cancel":  "cancel"
@@ -19,6 +19,8 @@ class Global.ResourceFormView extends Backbone.View
 
   @FIELD_BLACKLIST = ["created_at", "updated_at"]
 
+  @generated_field_counter: 0
+
   initialize: ->
     @wasNew = @model.instance.isNew()
 
@@ -26,11 +28,22 @@ class Global.ResourceFormView extends Backbone.View
     # generate form
     form = $ "<form>", class: "#{@model.resource.get "name"}"
     for field in @model.resource.fields()
-      if $.inArray(field.name, ResourceFormView.FIELD_BLACKLIST) == -1
-        form.append $("<label>", for: "#{@model.resource.get('name')}_#{field.name}", text: field.label)
-        form.append $("<input>", type: ResourceFormView.INPUT_TYPES[field.type], name: field.name, value: @model.instance.get(field.name), required: field.required)
-        form.append $("<br/>")
-    form.append $("<input />", type: "submit", class: "button", value: "Save")
+      continue if $.inArray(field.name, ResourceFormView.FIELD_BLACKLIST) != -1
+
+      widget_id = @_generate_field_id()
+      widget = $ "<input>"
+        id: widget_id
+        type: ResourceFormView.INPUT_TYPES[field.type]
+        name: field.name
+        value: @model.instance.get(field.name)
+        required: field.required
+
+      $("<div>", class: "field")
+        .append($("<label>", for: widget_id, text: field.label))
+        .append(widget)
+        .appendTo(form)
+
+    form.append $("<input>", type: "button", class: "button", value: "Save")
     form.append $("<a>", class: "cancel", text:"Cancel")
 
     form.bind "submit", (e) -> e.preventDefault()
@@ -58,3 +71,7 @@ class Global.ResourceFormView extends Backbone.View
 
       error: (model, response) =>
         alert "Error saving record!"
+
+
+  _generate_field_id: ->
+    "form_field_#{ResourceFormView.generated_field_counter++}"

@@ -44,4 +44,19 @@
     }
   }
 
+  .resource-form {
+    .field {
+
+      label {
+        font-weight: bold;
+        text-align: right;
+        padding-right: 1em;
+        display: inline-block;
+        width: 10em;
+      }
+
+      .widget { }
+    }
+  }
+
 }
