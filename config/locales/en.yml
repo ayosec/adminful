@@ -19,7 +19,7 @@ en:
           save: "Save"
           cancel: "Cancel"
         required:
-          title: "*"
+          abbr: "*"
           full: "required"
       create:
         success: "The instance has been created."
