@@ -31,15 +31,23 @@ class Global.ResourceFormView extends Backbone.View
       continue if $.inArray(field.name, ResourceFormView.FIELD_BLACKLIST) != -1
 
       widget_id = @_generate_field_id()
+      input_classes = [ResourceFormView.INPUT_TYPES[field.type]]
+      if field.required
+        input_classes.push "required"
       widget = $ "<input>"
+        class: input_classes.join(" ")
         id: widget_id
         type: ResourceFormView.INPUT_TYPES[field.type]
         name: field.name
         value: @model.instance.get(field.name)
         required: field.required
+      label = $ "<label>", for: widget_id, text: field.label
+      if field.required
+        label.html label.html() + " "
+        label.append $("<abbr>", title: I18n.t("resource_form.required.abbr"), text: I18n.t("resource_form.required.full"))
 
-      $("<div>", class: "field")
-        .append($("<label>", for: widget_id, text: field.label))
+      $("<div>", class: "input " + input_classes.join(" "))
+        .append(label)
         .append(widget)
         .appendTo(form)
 
