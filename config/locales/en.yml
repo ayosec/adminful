@@ -3,7 +3,6 @@ en:
     home:
       title: "Admin interface"
 
-
     client:
       resource_index:
         loading: "Loading instances. Please wait..."
@@ -19,7 +18,9 @@ en:
         actions:
           save: "Save"
           cancel: "Cancel"
-
+        required:
+          abbr: "*"
+          full: "required"
       create:
         success: "The instance has been created."
 
