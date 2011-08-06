@@ -44,7 +44,7 @@ class Global.ResourceFormView extends Backbone.View
       label = $ "<label>", for: widget_id, text: field.label
       if field.required
         label.html label.html() + " "
-        label.append $("<abbr>", title: "required", text: I18n.t("resource_form.required"))
+        label.append $("<abbr>", title: I18n.t("resource_form.required.title"), text: I18n.t("resource_form.required.full"))
 
       $("<div>", class: "input " + input_classes.join(" "))
         .append(label)

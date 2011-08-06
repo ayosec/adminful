@@ -18,8 +18,9 @@ en:
         actions:
           save: "Save"
           cancel: "Cancel"
-        required: "required"
-
+        required:
+          title: "*"
+          full: "required"
       create:
         success: "The instance has been created."
 
