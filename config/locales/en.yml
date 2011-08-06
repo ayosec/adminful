@@ -7,11 +7,15 @@ en:
       resource_index:
         loading: "Loading instances. Please wait..."
 
+        batch_operations:
+          delete:
+            button: "Delete selected"
+          none_selected: "Please select at least one instance"
+
         actions:
           new: "New"
           edit: "Edit"
           remove: "Remove"
-
           confirm_remove: "This will remove the instance. Are you sure?"
 
       resource_form:
@@ -23,7 +27,8 @@ en:
           full: "required"
       create:
         success: "The instance has been created."
-
+        error: "The instance could not be created."
       update:
         success: "The instance has been updated."
+        error: "The instance could not be updated."
 
