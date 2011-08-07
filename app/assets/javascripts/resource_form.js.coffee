@@ -80,8 +80,7 @@ class Global.ResourceFormView extends Backbone.View
         Backbone.history.navigate "/#{@model.resource.get("name")}", true
 
       error: (model, response) =>
-        alert "Error saving record!"
-
+        $.jGrowl I18n.t("#{if @wasNew then 'create' else 'update'}.error")
 
   _generate_field_id: ->
     "form_field_#{ResourceFormView.generated_field_counter++}"
