@@ -5,6 +5,7 @@ class Global.ResourcesIndex extends Backbone.View
   className: "resources-index"
   events:
     "click .actions .new":  "action_new"
+    "click .batch-delete": "batch_delete"
 
   initialize: ->
 
@@ -25,6 +26,7 @@ class Global.ResourcesIndex extends Backbone.View
 
     # Header with column names
     header = $("<thead>").appendTo(table)
+    header.append $("<th>") # we will place the checkbox for each row here for batch operations
     for field in @model.fields()
       header.append $("<th>", text: field.label)
 
@@ -36,10 +38,18 @@ class Global.ResourcesIndex extends Backbone.View
       body.append (new ResourceRow(model: instance)).render().el
 
 
+    batch = $ "<div>", class: "batch-operations"
+    batch.append $("<button>", class: "batch-delete", text: I18n.t("resource_index.batch_operations.delete.button"))
+
     actions = $ "<div>", class: "actions"
     actions.append $("<button>", class: "new", text: I18n.t("resource_index.actions.new"))
 
-    $(@el).empty().append table
+    $(@el).empty()
+    if @collection.length > 0
+      $(@el).append batch
+    $(@el).append table
+    if @collection.length > 0
+      $(@el).append batch.clone()
     $(@el).append actions
     this
 
@@ -54,6 +64,14 @@ class Global.ResourcesIndex extends Backbone.View
       append view.render().el
     Backbone.history.navigate "/#{@model.get("name")}/new", false
 
+  batch_delete: ->
+    checkboxes = $("input.batch-delete-resource:checked")
+    if checkboxes.length == 0
+      $.jGrowl I18n.t("resource_index.batch_operations.none_selected")
+    else
+      for input in checkboxes
+        $(input).data("instance").destroy()
+
 class Global.ResourceRow extends Backbone.View
   tagName: "tr"
 
@@ -67,6 +85,16 @@ class Global.ResourceRow extends Backbone.View
 
   render: ->
     $(@el).empty()
+    checkbox_col = $("<td>")
+    checkbox_input = $ "<input>",
+                        type: "checkbox",
+                        name: @model.id, value: "1",
+                        class: "batch-delete-resource"
+                        data:
+                          instance: @model
+    checkbox_col.append checkbox_input
+    checkbox_col.appendTo @el
+
 
     for field in @model.collection.resource.get("model").fields
       $("<td>", text: @model.get(field.name)).appendTo @el
