@@ -89,7 +89,6 @@ class Global.ResourceRow extends Backbone.View
     checkbox_input = $ "<input>",
                         type: "checkbox",
                         name: @model.id, value: "1",
-                        id: "resource_" + @model.id,
                         class: "batch-delete-resource"
                         data:
                           instance: @model
