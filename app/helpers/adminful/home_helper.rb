@@ -2,7 +2,7 @@ module Adminful::HomeHelper
   def resources_to_json(resources)
     resources.map do |resource|
       adminful_data = resource[:controller].adminful_data
-      route_name = resource[:route].name
+      route_name = resource[:route_name]
 
       collection_name = resource[:controller].name.demodulize.sub(/Controller/, '')
 

@@ -7,13 +7,13 @@ class ActionController::Base
 end
 
 module ActionDispatch::Routing::Mapper::Scoping
-  def adminful(options={})
-    options[Adminful::SNEAK_PARAM_NAME] = true
+  def adminful(options = {}, &block)
+    original_set = @set
+    @set = Adminful::RoutesWrapper.new(@set)
+    namespace options.delete(:namespace) || Adminful::Options.namespace, &block
 
-    scope(options) do
-      namespace(options.delete(:namespace) || Adminful::Options.namespace) do
-        yield
-     end
-    end
+  ensure
+    # Restore original @set
+    @set = original_set
   end
 end

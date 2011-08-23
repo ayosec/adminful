@@ -3,9 +3,8 @@ require 'adminful/rails_helper_methods'
 
 module Adminful
 
-  SNEAK_PARAM_NAME = :adminful_ready
-
   autoload :Properties, 'adminful/properties'
+  autoload :RoutesWrapper, 'adminful/routes_wrapper'
 
   module Options
     mattr_accessor :namespace
@@ -18,5 +17,12 @@ module Adminful
 
     config.adminful = Adminful::Options
     config.adminful.namespace = "adminful"
+
+    initializer "add_routing_paths" do
+      Adminful.managed_resources = []
+    end
   end
+
+  # Resources to be managed with this gem
+  mattr_accessor :managed_resources
 end
