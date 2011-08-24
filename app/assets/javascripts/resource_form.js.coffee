@@ -1,6 +1,4 @@
 
-Global = window
-
 class Global.ResourceFormView extends Backbone.View
   className: "resource-form"
   events:

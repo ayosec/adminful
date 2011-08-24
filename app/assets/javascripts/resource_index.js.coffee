@@ -1,6 +1,4 @@
 
-Global = window
-
 class Global.ResourcesIndex extends Backbone.View
   className: "resources-index"
   events:

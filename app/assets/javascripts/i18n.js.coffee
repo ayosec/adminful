@@ -1,5 +1,5 @@
 
-window.I18n =
+Global.I18n =
 
   t: (id) ->
     dict = Adminful.LocaleStrings

@@ -1,6 +1,4 @@
 
-Global = window
-
 class Global.Router extends Backbone.Router
   routes:
     "":                     "home"

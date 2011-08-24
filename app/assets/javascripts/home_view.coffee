@@ -1,6 +1,4 @@
 
-Global = window
-
 class Global.HomeViewBase
   constructor: (@resources) ->
 
