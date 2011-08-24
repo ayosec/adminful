@@ -24,7 +24,7 @@ class Global.Adminful
 
     Backbone.history.start()
 
-  set_view: (view) ->
+  setView: (view) ->
     view.app = @
     $("#layout").
       empty().

@@ -4,20 +4,20 @@ Global = window
 class Global.ResourcesIndex extends Backbone.View
   className: "resources-index"
   events:
-    "click .actions .new":  "action_new"
-    "click .batch-delete": "batch_delete"
+    "click .actions .new":  "actionNew"
+    "click .batch-delete": "batchDelete"
 
   initialize: ->
 
     @collection.bind "reset", =>
-      @loading_records = false
+      @loadingRecords = false
       @render()
 
-    @loading_records = true
+    @loadingRecords = true
     @collection.fetch()
 
   render: ->
-    if @loading_records
+    if @loadingRecords
       $(@el).text I18n.t("resource_index.loading")
       return this
 
@@ -54,10 +54,10 @@ class Global.ResourcesIndex extends Backbone.View
     $(@el).append actions
     this
 
-  action_new: ->
+  actionNew: ->
     Backbone.history.navigate "/#{@collection.resource.name}/new", true
 
-  batch_delete: ->
+  batchDelete: ->
     checkboxes = $("input.batch-delete-resource:checked")
     if checkboxes.length == 0
       $.jGrowl I18n.t("resource_index.batch_operations.none_selected")
@@ -69,8 +69,8 @@ class Global.ResourceRow extends Backbone.View
   tagName: "tr"
 
   events:
-    "click .actions .remove":  "action_remove"
-    "click .actions .edit":    "action_edit"
+    "click .actions .remove":  "actionRemove"
+    "click .actions .edit":    "actionEdit"
 
   initialize: ->
     @model.bind "remove", => @remove()
@@ -78,15 +78,15 @@ class Global.ResourceRow extends Backbone.View
 
   render: ->
     $(@el).empty()
-    checkbox_col = $("<td>")
-    checkbox_input = $ "<input>",
+    checkboxCol = $("<td>")
+    checkboxInput = $ "<input>",
                         type: "checkbox",
                         name: @model.id, value: "1",
                         class: "batch-delete-resource"
                         data:
                           instance: @model
-    checkbox_col.append checkbox_input
-    checkbox_col.appendTo @el
+    checkboxCol.append checkboxInput
+    checkboxCol.appendTo @el
 
 
     for field in @model.collection.resource.fields
@@ -99,12 +99,12 @@ class Global.ResourceRow extends Backbone.View
 
     this
 
-  action_remove: ->
+  actionRemove: ->
     return unless confirm(I18n.t("resource_index.actions.confirm_remove"))
     @model.destroy()
 
-  action_edit: ->
+  actionEdit: ->
     view = new ResourceFormView(model: @model)
-    @app.set_view view
+    @app.setView view
     Backbone.history.navigate "/#{@model.collection.resource.name}/#{@model.id}/edit", false
 

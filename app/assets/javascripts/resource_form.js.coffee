@@ -19,7 +19,7 @@ class Global.ResourceFormView extends Backbone.View
 
   @FIELD_BLACKLIST = ["created_at", "updated_at"]
 
-  @generated_field_counter: 0
+  @generatedFieldCounter: 0
 
   initialize: ->
     @wasNew = @model.isNew()
@@ -30,23 +30,23 @@ class Global.ResourceFormView extends Backbone.View
     for field in @model.collection.resource.fields
       continue if $.inArray(field.name, ResourceFormView.FIELD_BLACKLIST) != -1
 
-      widget_id = @_generate_field_id()
-      input_classes = [ResourceFormView.INPUT_TYPES[field.type]]
+      widgetId = @_generateFieldId()
+      inputClasses = [ResourceFormView.INPUT_TYPES[field.type]]
       if field.required
-        input_classes.push "required"
+        inputClasses.push "required"
       widget = $ "<input>"
-        class: input_classes.join(" ")
-        id: widget_id
+        class: inputClasses.join(" ")
+        id: widgetId
         type: ResourceFormView.INPUT_TYPES[field.type]
         name: field.name
         value: @model.get(field.name)
         required: field.required
-      label = $ "<label>", for: widget_id, text: field.label
+      label = $ "<label>", for: widgetId, text: field.label
       if field.required
         label.html label.html() + " "
         label.append $("<abbr>", title: I18n.t("resource_form.required.abbr"), text: I18n.t("resource_form.required.full"))
 
-      $("<div>", class: "field " + input_classes.join(" "))
+      $("<div>", class: "field " + inputClasses.join(" "))
         .append(label)
         .append(widget)
         .appendTo(form)
@@ -82,5 +82,5 @@ class Global.ResourceFormView extends Backbone.View
       error: (model, response) =>
         $.jGrowl I18n.t("#{if @wasNew then 'create' else 'update'}.error")
 
-  _generate_field_id: ->
-    "form_field_#{ResourceFormView.generated_field_counter++}"
+  _generateFieldId: ->
+    "form_field_#{ResourceFormView.generatedFieldCounter++}"
