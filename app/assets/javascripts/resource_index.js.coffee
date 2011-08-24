@@ -9,7 +9,6 @@ class Global.ResourcesIndex extends Backbone.View
 
   initialize: ->
 
-    @collection = new Global[@model.instanceCollectionClass()]
     @collection.bind "reset", =>
       @loading_records = false
       @render()
@@ -22,12 +21,12 @@ class Global.ResourcesIndex extends Backbone.View
       $(@el).text I18n.t("resource_index.loading")
       return this
 
-    table = $ "<table>", class: "#{@model.get "name"}-index"
+    table = $ "<table>", class: "#{@collection.resource.name}-index"
 
     # Header with column names
     header = $("<thead>").appendTo(table)
     header.append $("<th>") # we will place the checkbox for each row here for batch operations
-    for field in @model.fields()
+    for field in @collection.resource.fields
       header.append $("<th>", text: field.label)
 
     header.append $("<th>", text: " ", class: "actions")
@@ -35,7 +34,9 @@ class Global.ResourcesIndex extends Backbone.View
     # Every row is a ResourceRow instance
     body = $("<tbody>").appendTo(table)
     @collection.each (instance) =>
-      body.append (new ResourceRow(model: instance)).render().el
+      rowView = new ResourceRow(model: instance)
+      rowView.app = @app
+      body.append rowView.render().el
 
 
     batch = $ "<div>", class: "batch-operations"
@@ -54,15 +55,7 @@ class Global.ResourcesIndex extends Backbone.View
     this
 
   action_new: ->
-    view = new ResourceFormView
-      model:
-        resource: @model
-        instance: new Global[@model.get("model").name]
-    view.app = @app
-    $("#layout").
-      empty().
-      append view.render().el
-    Backbone.history.navigate "/#{@model.get("name")}/new", false
+    Backbone.history.navigate "/#{@collection.resource.name}/new", true
 
   batch_delete: ->
     checkboxes = $("input.batch-delete-resource:checked")
@@ -96,7 +89,7 @@ class Global.ResourceRow extends Backbone.View
     checkbox_col.appendTo @el
 
 
-    for field in @model.collection.resource.get("model").fields
+    for field in @model.collection.resource.fields
       $("<td>", text: @model.get(field.name)).appendTo @el
 
     actions = $ "<td>", class: "actions"
@@ -111,12 +104,7 @@ class Global.ResourceRow extends Backbone.View
     @model.destroy()
 
   action_edit: ->
-    view = new ResourceFormView
-      model:
-        resource: @model.collection.resource
-        instance: @model
-    view.app = @app
-    $("#layout").
-      empty().
-      append view.render().el
-    Backbone.history.navigate "/#{@model.collection.resource.get("name")}/#{@model.id}/edit", false
+    view = new ResourceFormView(model: @model)
+    @app.set_view view
+    Backbone.history.navigate "/#{@model.collection.resource.name}/#{@model.id}/edit", false
+

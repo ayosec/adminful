@@ -22,12 +22,12 @@ class Global.ResourceFormView extends Backbone.View
   @generated_field_counter: 0
 
   initialize: ->
-    @wasNew = @model.instance.isNew()
+    @wasNew = @model.isNew()
 
   render: ->
     # generate form
-    form = $ "<form>", class: "#{@model.resource.get "name"}"
-    for field in @model.resource.fields()
+    form = $ "<form>", class: "#{@model.collection.resource.name}"
+    for field in @model.collection.resource.fields
       continue if $.inArray(field.name, ResourceFormView.FIELD_BLACKLIST) != -1
 
       widget_id = @_generate_field_id()
@@ -39,14 +39,14 @@ class Global.ResourceFormView extends Backbone.View
         id: widget_id
         type: ResourceFormView.INPUT_TYPES[field.type]
         name: field.name
-        value: @model.instance.get(field.name)
+        value: @model.get(field.name)
         required: field.required
       label = $ "<label>", for: widget_id, text: field.label
       if field.required
         label.html label.html() + " "
         label.append $("<abbr>", title: I18n.t("resource_form.required.abbr"), text: I18n.t("resource_form.required.full"))
 
-      $("<div>", class: "input " + input_classes.join(" "))
+      $("<div>", class: "field " + input_classes.join(" "))
         .append(label)
         .append(widget)
         .appendTo(form)
@@ -61,7 +61,7 @@ class Global.ResourceFormView extends Backbone.View
     this
 
   cancel: ->
-    Backbone.history.navigate "/#{@model.resource.get("name")}", true
+    Backbone.history.navigate "/#{@model.collection.resource.name}", true
 
   submit: ->
 
@@ -71,13 +71,13 @@ class Global.ResourceFormView extends Backbone.View
       return
 
     values = {}
-    for field in @model.resource.fields()
+    for field in @model.collection.resource.fields
       values[field.name] = $("input:[name=#{field.name}]").val()
-    @model.instance.save values,
+    @model.save values,
       success: (model, response) =>
         $.jGrowl I18n.t("#{if @wasNew then 'create' else 'update'}.success")
 
-        Backbone.history.navigate "/#{@model.resource.get("name")}", true
+        Backbone.history.navigate "/#{@model.collection.resource.name}", true
 
       error: (model, response) =>
         $.jGrowl I18n.t("#{if @wasNew then 'create' else 'update'}.error")

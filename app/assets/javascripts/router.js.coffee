@@ -8,44 +8,36 @@ class Global.Router extends Backbone.Router
     "/:resource/:id/edit":  "resource_edit"
     "/:resource/new":       "resource_new"
 
-  set_view: (view) ->
-    view.app = @app
-    $("#layout").
-      empty().
-      append view.render().el
-
   home: ->
     $("#layout").empty()
 
   resource_new: (resource_name) ->
-    resource = @app.resources.detect (r) -> r.get("name") == resource_name
-    if resource
-      @set_view new ResourceFormView
-        model:
-          resource: resource
-          instance: new Global[resource.get("model").name]
+    collection = @app.resources[resource_name]
+    if collection
+      collection = new collection
+      newInstance = new collection.model
+      newInstance.collection = collection
+      view = new ResourceFormView(model: newInstance)
+      @app.set_view view
 
   resource_index: (resource_name) ->
-    resource = @app.resources.detect (r) -> r.get("name") == resource_name
-    if resource
-      @set_view new ResourcesIndex(model: resource)
+    collection = @app.resources[resource_name]
+    if collection
+      @app.set_view new ResourcesIndex(collection: new collection)
 
   resource_edit: (resource_name, instance_id) ->
-    # need the model definition to know which fields we need to display
-    resource = @app.resources.detect (r) -> r.get("name") == resource_name
+    collection = @app.resources[resource_name]
 
-    # instantiate the resource
-    if resource
-      instance = new Global[resource.get("model").name](id: instance_id)
+    if collection
+      # TODO Show a message while loading the instance
 
-    if resource && instance
-      instance.fetch
-        success: (model, response) =>
-          @set_view new ResourceFormView
-            model:
-              resource: resource
-              instance: instance
-        error: (model, response) =>
+      collection = new collection
+      newInstance = new collection.model id: instance_id
+      newInstance.collection = collection
+      newInstance.fetch
+        success: =>
+          @app.set_view new ResourceFormView(model: newInstance)
+
+        error: (model, response) ->
+          # TODO Use I18n
           alert "Error fetching record!"
-    else
-      alert("Record not found!")
