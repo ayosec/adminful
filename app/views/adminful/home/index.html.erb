@@ -42,6 +42,7 @@
       end
     %>
 
+    adminfulGenerateCustomClasses();
     Adminful.App = new Adminful({<%=
       generated.map {|name, collection| "#{name.to_json}: #{collection}" }.join(", ").html_safe
     %>});

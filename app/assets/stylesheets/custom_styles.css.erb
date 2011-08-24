@@ -1,0 +1,7 @@
+<%=
+  Rails.application.assets.index.paths.grep(/\/stylesheets$/).map do |base|
+    Dir["#{base}/adminful/*"].map do |filename|
+       Rails.application.assets.find_asset(filename).body
+    end.join
+  end.join
+%>
