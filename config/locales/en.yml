@@ -14,6 +14,7 @@ en:
 
         actions:
           new: "New"
+          refresh: "Refresh"
           edit: "Edit"
           remove: "Remove"
           confirm_remove: "This will remove the instance. Are you sure?"

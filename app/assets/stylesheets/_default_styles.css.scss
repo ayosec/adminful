@@ -69,12 +69,9 @@
       }
     }
 
-    .actions {
-      padding-top: 1em;
-
-      .new {
-        @include button;
-      }
+    .global-actions {
+      padding-bottom: 1em;
+      text-align: right;
     }
   }
 

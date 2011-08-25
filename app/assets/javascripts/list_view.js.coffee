@@ -2,7 +2,6 @@
 class Global.ListViewBase extends Backbone.View
   className: "resources-index"
   events:
-    "click    .actions .new":  "actionNew"
     "change   .batch-global":  "toggleBatchGlobal"
     "change   .batch-action":  "updateBatchGlobal"
 
@@ -28,8 +27,9 @@ class Global.ListViewBase extends Backbone.View
       @collection.resource.fields
 
   render: ->
+    el = $(@el)
     if @loadingRecords
-      $(@el).text I18n.t("resource_index.loading")
+      el.text I18n.t("resource_index.loading")
       return this
 
     table = $ "<table>", class: "#{@collection.resource.name}-index"
@@ -39,18 +39,16 @@ class Global.ListViewBase extends Backbone.View
     for instance in @collection.models
       body.append @renderRow(instance)
 
-    batch = @generateBatchActions()
+    globalActionsBlock = @generateGlobalActions()
+    batchActionsBlock = @generateBatchActions()
 
-    actions = $ "<div>", class: "actions"
-    actions.append $("<button>", class: "new", text: I18n.t("resource_index.actions.new"))
+    el.empty()
 
-    $(@el).empty()
-    if @collection.length > 0
-      $(@el).append batch
-    $(@el).append table
-    if @collection.length > 0
-      $(@el).append batch.clone(true)
-    $(@el).append actions
+    el.append globalActionsBlock
+    el.append batchActionsBlock if @collection.length > 0
+    el.append table
+    el.append batchActionsBlock.clone(true) if @collection.length > 0
+
     this
 
   renderHeader: ->
@@ -73,8 +71,8 @@ class Global.ListViewBase extends Backbone.View
     rowView.app = @app
     rowView.render().el
 
-  actionNew: ->
-    Backbone.history.navigate "/#{@collection.resource.name}/new", true
+
+  # Batch actions
 
   batchActions: ->
     [
@@ -110,6 +108,28 @@ class Global.ListViewBase extends Backbone.View
     for instance in @instancesGetSelection()
       instance.destroy()
     return
+
+  # Global actions
+
+  generateGlobalActions: ->
+    actions = $ "<div>", class: "global-actions"
+
+    $ "<button>"
+      class: "refresh"
+      text: I18n.t("resource_index.actions.refresh")
+      click: => @collection.fetch()
+    .appendTo actions
+
+    $ "<button>"
+      class: "new"
+      text: I18n.t("resource_index.actions.new")
+      click: => @globalActionNew()
+    .appendTo actions
+
+    actions
+
+  globalActionNew: ->
+    Backbone.history.navigate "/#{@collection.resource.name}/new", true
 
 class Global.ListViewRowBase extends Backbone.View
   tagName: "tr"
