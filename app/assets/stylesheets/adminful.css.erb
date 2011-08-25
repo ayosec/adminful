@@ -1,0 +1,11 @@
+<%
+  require_asset "jquery.jgrowl"
+
+  Dir["#{Adminful::Options.custom_css}/*.css*"].map do |filename|
+    require_asset filename
+  end
+
+  if Adminful::Options.enable_default_styles
+    require_asset "_default_styles"
+  end
+%>

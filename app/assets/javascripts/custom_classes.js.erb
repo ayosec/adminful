@@ -1,10 +1,8 @@
 function adminfulGenerateCustomClasses() {
 <%=
-  Rails.application.assets.index.paths.grep(/\/javascripts$/).map do |base|
-    Dir["#{base}/adminful/*.js*"].map do |filename|
-       depend_on_asset filename
-       Rails.application.assets.find_asset(filename).body
-    end.join
+  Dir["#{Adminful::Options.custom_javascript}/*.js*"].map do |filename|
+    depend_on_asset filename
+    Rails.application.assets.find_asset(filename).body
   end.join
 %>
 }
