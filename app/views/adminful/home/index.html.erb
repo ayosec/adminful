@@ -22,7 +22,8 @@
         # Backbone model
         model_name = definition[:model][:name]
         concat "    g['#{escape_javascript model_name}'] = Backbone.Model.extend({\n"
-        concat "      urlRoot: '#{escape_javascript definition[:index_path]}'\n"
+        concat "      urlRoot: '#{escape_javascript definition[:index_path]}',\n"
+        concat "      modelName: '#{escape_javascript model_name}'\n"
         concat "    });\n"
 
         # Backbone collection
@@ -32,6 +33,7 @@
         concat "      model: g['#{escape_javascript model_name}'],\n"
         concat "      url: '#{escape_javascript definition[:index_path]}',\n"
         concat "      resource: {\n"
+        concat "        className: '#{escape_javascript definition[:collection_name]}',\n"
         concat "        label: '#{escape_javascript definition[:label]}',\n"
         concat "        name: '#{escape_javascript definition[:name]}',\n"
         concat "        fields: #{definition[:model][:fields].to_json}\n".html_safe

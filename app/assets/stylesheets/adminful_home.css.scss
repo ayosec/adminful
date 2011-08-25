@@ -57,6 +57,8 @@
       tr:nth-child(odd) td { background: white; }
       tr:nth-child(even) td { background: #ddf; }
 
+      td.batch, th.batch { width: 1%; }
+
       .actions {
         width: 1%;
         white-space: nowrap;

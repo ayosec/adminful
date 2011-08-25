@@ -21,7 +21,9 @@ class Global.Router extends Backbone.Router
   resourceIndex: (resourceName) ->
     collection = @app.resources[resourceName]
     if collection
-      @app.setView new ResourcesIndex(collection: new collection)
+      collection = new collection
+      viewClass = prepareCustomClass(collection.resource.className + "ListView", "ListViewBase")
+      @app.setView new viewClass(collection: collection)
 
   resourceEdit: (resourceName, instanceId) ->
     collection = @app.resources[resourceName]
