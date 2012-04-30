@@ -1,4 +1,5 @@
 require 'rails/engine'
+require 'backbone-rails'
 require 'adminful/rails_helper_methods'
 
 module Adminful
